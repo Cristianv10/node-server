@@ -1,17 +1,22 @@
 const express = require('express');
 const app = express();
-
-const tasks = [
-  { id: 1, description: 'Hacer la compra', status: 'Pendiente' },
-  { id: 2, description: 'Lavar el coche', status: 'Completada' },
-  { id: 3, description: 'Estudiar para el examen', status: 'Pendiente' },
-];
+const tasks = require('./tasks');
 
 app.get('/tasks', (req, res) => {
   res.json(tasks);
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado en http://localhost:${PORT}`);
+const viewRouter = require('./list-view-router');
+const editRouter = require('./list-edit-router');
+
+app.use(express.json());
+
+
+app.use('/view', viewRouter);
+app.use('/edit', editRouter);
+
+
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 });
